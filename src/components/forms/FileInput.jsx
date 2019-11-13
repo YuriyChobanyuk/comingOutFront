@@ -18,14 +18,15 @@ export const FileInput = ({
   };
 
   return (
-    <Form.Group className="row align-items-center">
+    <Form.Group className="row align-items-center position-relative">
       <div className="col-2">{label}</div>
       <div className="custom-file col">
         <Form.Control
           className={`col custom-file-input ${
-            errors && touched ? 'is-invalid' : ''
+            touched ? (errors ? "is-invalid" : "is-valid") : ""
           }`}
           type="file"
+          accept=".jpg, .jpeg, .png"
           id={fieldName}
           name={fieldName}
           onChange={handleFile}
@@ -35,8 +36,9 @@ export const FileInput = ({
           {fileName}
         </label>
       </div>
-
-      <div className="invalid-feedback">{errors ? errors.join('. ') : ''}</div>
+      <div className="invalid-feedback absolute-feedback">
+        {errors ? errors : ""}
+      </div>
     </Form.Group>
   );
 };

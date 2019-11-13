@@ -12,3 +12,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.absolute-feedback {
+  position: absolute;
+  bottom: -1.1rem;
+  left: calc(100% / 6 + 1rem);
+}
