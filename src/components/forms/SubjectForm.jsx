@@ -7,11 +7,11 @@ import { submitForm } from "../../services/forms.service";
 
 import { SubjectFormTemplate } from "./SubjectFromTemplate";
 
-export const SubjectForm = () => {
+export const SubjectForm = ({submitCallback}) => {
   const [fileName, setFileName] = useState("Choose file...");
 
   const submitSubjectForm = async (values, actions) => {
-    await submitForm(values, actions, setFileName)
+    await submitForm(values, actions, submitCallback, setFileName)
   }
 
   const SubjectSchema = yup.object().shape({
@@ -29,6 +29,7 @@ export const SubjectForm = () => {
       .required("Image is required")
       .nullable()
   });
+  
   return (
     <Formik
       initialValues={{

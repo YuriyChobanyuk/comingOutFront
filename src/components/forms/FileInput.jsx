@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Form } from 'react-bootstrap';
 
 export const FileInput = ({
@@ -9,13 +9,20 @@ export const FileInput = ({
   label,
   setFieldValue,
   fileName,
-  setFileName
+  setFileName,
+  accept
 }) => {
 
+  const [files, setFiles] = useState([]);
+
   const handleFile = e => {
-    const file = e.currentTarget.files[0] || 'Choose file...';
-    setFieldValue(fieldName, file);
-    setFileName(file.name);
+    setFiles(e.currentTarget.files);
+    const file = e.currentTarget.files[0];
+    if (file) {
+      setFieldValue(fieldName, file);
+      setFileName(file.name);
+      setFiles([]);
+    }
   };
 
   return (
@@ -27,11 +34,12 @@ export const FileInput = ({
             touched ? (errors ? "is-invalid" : "is-valid") : ""
           }`}
           type="file"
-          accept=".jpg, .jpeg, .png"
+          accept={accept}
           id={fieldName}
           name={fieldName}
           onChange={handleFile}
           onBlur={handleBlur}
+          files={files}
         />
         <label className="custom-file-label" htmlFor={fieldName}>
           {fileName}

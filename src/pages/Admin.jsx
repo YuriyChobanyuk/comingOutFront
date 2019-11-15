@@ -4,6 +4,7 @@ import { Container } from 'react-bootstrap';
 
 import { NavigationAdmin } from '../components/NavigationAdmin';
 import {SubjectForm} from '../components/forms/SubjectForm';
+import { postSubject } from '../services/http.service';
 
 export const Admin = () => {
   let { path } = useRouteMatch();
@@ -17,7 +18,7 @@ export const Admin = () => {
             <h1>Subjects</h1>
           </Route>
           <Route path={`${path}/controls`}>
-            <SubjectForm></SubjectForm>
+            <SubjectForm submitCallback={postSubject}></SubjectForm>
           </Route>
         </Switch>
       </Container>

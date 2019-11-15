@@ -1,9 +1,9 @@
-import React from 'react';
-import { Form, Button } from 'react-bootstrap';
-import { TextInput } from './TextInput';
-import { DateInput } from './DateInput';
-import { SelectInput } from './SelectInput';
-import { FileInput } from './FileInput';
+import React from "react";
+import { Form, Button } from "react-bootstrap";
+import { TextInput } from "./TextInput";
+import { DateInput } from "./DateInput";
+import { SelectInput } from "./SelectInput";
+import { FileInput } from "./FileInput";
 
 export const SubjectFormTemplate = ({
   values,
@@ -19,7 +19,7 @@ export const SubjectFormTemplate = ({
   return (
     <Form className="mt-3" onSubmit={handleSubmit}>
       <TextInput
-        fieldName={'title'}
+        fieldName={"title"}
         value={values.title}
         errors={errors.title}
         touched={touched.title}
@@ -30,7 +30,7 @@ export const SubjectFormTemplate = ({
       ></TextInput>
 
       <TextInput
-        fieldName={'comingDate'}
+        fieldName={"comingDate"}
         value={values.comingDate}
         errors={errors.comingDate}
         touched={touched.comingDate}
@@ -41,7 +41,7 @@ export const SubjectFormTemplate = ({
       ></TextInput>
 
       <DateInput
-        fieldName={'pendingDate'}
+        fieldName={"pendingDate"}
         value={values.pendingDate}
         errors={errors.pendingDate}
         touched={touched.pendingDate}
@@ -51,7 +51,7 @@ export const SubjectFormTemplate = ({
       ></DateInput>
 
       <SelectInput
-        fieldName={'category'}
+        fieldName={"category"}
         value={values.category}
         errors={errors.category}
         touched={touched.category}
@@ -59,17 +59,17 @@ export const SubjectFormTemplate = ({
         handleBlur={handleBlur}
         label="Category"
         options={[
-          { value: '', title: 'Select subject`s category' },
-          { value: 'serial', title: 'Serial' },
-          { value: 'film', title: 'Film' },
-          { value: 'book', title: 'Book' },
-          { value: 'album', title: 'Music album' },
-          { value: 'anime', title: 'Anime' },
+          { value: "", title: "Select subject`s category" },
+          { value: "serial", title: "Serial" },
+          { value: "film", title: "Film" },
+          { value: "book", title: "Book" },
+          { value: "album", title: "Music album" },
+          { value: "anime", title: "Anime" }
         ]}
       />
 
       <FileInput
-        fieldName={'imgFile'}
+        fieldName={"imgFile"}
         errors={errors.imgFile}
         touched={touched.imgFile}
         setFieldValue={setFieldValue}
@@ -77,6 +77,7 @@ export const SubjectFormTemplate = ({
         label="Image"
         fileName={fileName}
         setFileName={setFileName}
+        accept=".jpg, .jpeg, .png"
       />
 
       <Button className="mt-3 mx-auto d-block" variant="primary" type="submit">
