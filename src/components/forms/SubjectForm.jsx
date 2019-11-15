@@ -1,36 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik } from "formik";
 import * as yup from "yup";
 
-import {validateDate} from '../../services/date.service';
+import { validateDate } from "../../services/date.service";
+import { submitForm } from "../../services/forms.service";
 
 import { SubjectFormTemplate } from "./SubjectFromTemplate";
 
 export const SubjectForm = () => {
+  const [fileName, setFileName] = useState("Choose file...");
+
+  const submitSubjectForm = async (values, actions) => {
+    await submitForm(values, actions, setFileName)
+  }
+
   const SubjectSchema = yup.object().shape({
     title: yup.string().required("Title is required"),
     comingDate: yup.string().required("Coming date is required"),
     pendingDate: yup
-      .string().test(
-        "is-up-from-now",
-        "Pending date should not be past",
-        value => {
-          return validateDate(value);
-        }
-      )
+      .string()
+      .test("is-up-from-now", "Pending date should not be past", value => {
+        return validateDate(value);
+      })
       .required("Pending date is required"),
     category: yup.string().required("Category is required"),
     imgFile: yup
-      .object()
-      .test(
-        "is-file",
-        "Uploaded item is not image",
-        value => value instanceof File
-      )
+      .string()
+      .required("Image is required")
       .nullable()
   });
   return (
-
     <Formik
       initialValues={{
         title: "",
@@ -40,12 +39,15 @@ export const SubjectForm = () => {
         imgFile: null
       }}
       validationSchema={SubjectSchema}
-      onSubmit={(values, actions) => {
-        console.log(`values: `, values);
-        actions.setSubmitting(false);
-      }}
+      onSubmit={submitSubjectForm}
     >
-      {props => <SubjectFormTemplate {...props} />}
+      {props => (
+        <SubjectFormTemplate
+          {...props}
+          fileName={fileName}
+          setFileName={setFileName}
+        />
+      )}
     </Formik>
   );
 };

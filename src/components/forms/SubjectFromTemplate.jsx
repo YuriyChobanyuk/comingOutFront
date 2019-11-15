@@ -13,6 +13,8 @@ export const SubjectFormTemplate = ({
   handleBlur,
   handleSubmit,
   setFieldValue,
+  fileName,
+  setFileName
 }) => {
   return (
     <Form className="mt-3" onSubmit={handleSubmit}>
@@ -73,6 +75,8 @@ export const SubjectFormTemplate = ({
         setFieldValue={setFieldValue}
         handleBlur={handleBlur}
         label="Image"
+        fileName={fileName}
+        setFileName={setFileName}
       />
 
       <Button className="mt-3 mx-auto d-block" variant="primary" type="submit">
