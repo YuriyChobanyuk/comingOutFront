@@ -7,12 +7,12 @@ import { submitForm } from "../../services/forms.service";
 
 import { SubjectFormTemplate } from "./SubjectFromTemplate";
 
-export const SubjectForm = ({submitCallback}) => {
+export const SubjectForm = ({ submitCallback }) => {
   const [fileName, setFileName] = useState("Choose file...");
 
   const submitSubjectForm = async (values, actions) => {
-    await submitForm(values, actions, submitCallback, setFileName)
-  }
+    await submitForm(values, actions, submitCallback, setFileName);
+  };
 
   const SubjectSchema = yup.object().shape({
     title: yup.string().required("Title is required"),
@@ -25,11 +25,11 @@ export const SubjectForm = ({submitCallback}) => {
       .required("Pending date is required"),
     category: yup.string().required("Category is required"),
     imgFile: yup
-      .string()
+      .object()
       .required("Image is required")
       .nullable()
   });
-  
+
   return (
     <Formik
       initialValues={{
