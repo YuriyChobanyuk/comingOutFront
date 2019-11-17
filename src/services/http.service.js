@@ -27,3 +27,14 @@ export const getSubjects = async () => {
   }
   return res.data;
 }
+
+export const getSubject = async (id) => {
+  let res;
+  try {
+    res = await axios.get(`${apiURL}/subjects/${id}`)
+  } catch (e) {
+    throw new Error('Subject get error: ' + e.message)
+  }
+
+  return res.data;
+}

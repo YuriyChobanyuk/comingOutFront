@@ -3,12 +3,12 @@ import { connect } from "react-redux";
 import { Table } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 
-import { getSubjects } from "../services/http.service";
+import { getSubjectsList } from "../redux/actions/subject.action";
 
 class SubjectsList extends Component {
   constructor(props) {
     super(props);
-    this.appendSubjects = props.appendSubjects;
+    this.getSubjects = this.props.getSubjects;
     this.history = props.history;
     this.location = props.location;
   }
@@ -25,10 +25,8 @@ class SubjectsList extends Component {
     //     imgPath: 'imgPath'
     //   }
     // ]);
-    getSubjects()
-      .then(res => this.props.appendSubjects(res.subjectsList))
-      .catch(e => {console.log(e.message)});
-  }
+    this.props.getSubjects();
+  };
 
   moveToSubject(id) {
     this.history.push(`${this.location.pathname}/${id}`);
@@ -66,8 +64,7 @@ const mapStateAsProps = ({ subjectReducer }) => {
 
 const mapActionsAsProps = dispatch => {
   return {
-    appendSubjects: subjectsList =>
-      dispatch({ type: "APPEND_SUBJECTS", payload: subjectsList })
+    getSubjects: () => dispatch(getSubjectsList())
   };
 };
 

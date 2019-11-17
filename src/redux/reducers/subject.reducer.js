@@ -1,20 +1,22 @@
+import { APPEND_SUBJECTS, ADD_SUBJECT, REMOVE_SUBJECT } from "../actions/actionTypes";
+
 const initialState = {
   subjects: []
 };
 
 const subjectReducer = (state = initialState, actions) => {
   switch (actions.type) {
-    case "APPEND_SUBJECTS":
+    case APPEND_SUBJECTS:
       return {
         ...state,
         subjects: [...actions.payload]
       };
-    case "ADD_SUBJECT":
+    case ADD_SUBJECT:
       return {
         ...state,
         subjects: [...state.subjects, actions.payload]
       };
-    case "REMOVE_SUBJECT":
+    case REMOVE_SUBJECT:
       return {
         ...state,
         subjects: state.subjects.filter(
