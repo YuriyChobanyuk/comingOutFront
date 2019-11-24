@@ -3,10 +3,9 @@ import { Switch, Route, useRouteMatch } from "react-router-dom";
 import { Container } from "react-bootstrap";
 
 import { NavigationAdmin } from "../components/NavigationAdmin";
-import { SubjectForm } from "../components/forms/SubjectForm";
-import { postSubject } from "../services/http.service";
+import SubjectCreate from "../components/SubjectCreate";
 import SubjectsList from "../components/SubjectsList";
-import Subject from "../components/Subject";
+import Subject from "./Subject";
 
 export const Admin = () => {
   let { path } = useRouteMatch();
@@ -20,7 +19,7 @@ export const Admin = () => {
             <SubjectsList></SubjectsList>
           </Route>
           <Route path={`${path}/controls`}>
-            <SubjectForm submitCallback={postSubject}></SubjectForm>
+            <SubjectCreate></SubjectCreate>
           </Route>
           <Route path={`${path}/subjects/:id`}>
             <Subject></Subject>

@@ -1,4 +1,9 @@
-import { APPEND_SUBJECTS, ADD_SUBJECT, REMOVE_SUBJECT } from "../actions/actionTypes";
+import {
+  APPEND_SUBJECTS,
+  ADD_SUBJECT,
+  REMOVE_SUBJECT,
+  UPDATE_SUBJECT
+} from "../actions/actionTypes";
 
 const initialState = {
   subjects: []
@@ -22,6 +27,16 @@ const subjectReducer = (state = initialState, actions) => {
         subjects: state.subjects.filter(
           subject => subject._id !== actions.payload._id
         )
+      };
+    case UPDATE_SUBJECT:
+      console.log(actions.payload)
+      return {
+        ...state,
+        subjects: state.subjects.map(subject => {
+          if (actions.payload._id === subject._id) {
+            return actions.payload;
+          } else return subject;
+        })
       };
     default:
       return state;

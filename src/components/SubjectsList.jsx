@@ -13,19 +13,7 @@ class SubjectsList extends Component {
     this.location = props.location;
   }
   componentDidMount = () => {
-    // this.appendSubjects([
-    //   {
-    //     title: "Test title",
-    //     comingDate: "Summer 2020",
-    //     category: "Serial",
-    //     _id: 345,
-    //     pendingDate: new Date(),
-    //     creationDate: new Date(),
-    //     active: true,
-    //     imgPath: 'imgPath'
-    //   }
-    // ]);
-    this.props.getSubjects();
+    this.getSubjects();
   };
 
   moveToSubject(id) {
@@ -64,7 +52,7 @@ const mapStateAsProps = ({ subjectReducer }) => {
 
 const mapActionsAsProps = dispatch => {
   return {
-    getSubjects: () => dispatch(getSubjectsList())
+    getSubjects: async () => dispatch(getSubjectsList())
   };
 };
 

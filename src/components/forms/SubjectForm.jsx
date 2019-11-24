@@ -1,14 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik } from "formik";
 import * as yup from "yup";
 
-import { validateDate } from "../../services/date.service";
+import {
+  validateDate,
+  transformDateToInput
+} from "../../services/date.service";
 import { submitForm } from "../../services/forms.service";
 
 import { SubjectFormTemplate } from "./SubjectFromTemplate";
 
-export const SubjectForm = ({ submitCallback }) => {
-  const [fileName, setFileName] = useState("Choose file...");
+const SubjectForm = ({
+  submitCallback,
+  initialValue
+}) => {
+  const [fileName, setFileName] = useState(
+    initialValue ? initialValue.imgPath.split("/").pop() : "Choose file..."
+  );
+
+  useEffect(() => {
+    
+    if (initialValue) setFileName(initialValue.imgPath.split("/").pop());
+  }, [initialValue])
+
+  const initialValues = initialValue
+    ? {
+        ...initialValue,
+        pendingDate: transformDateToInput(initialValue.pendingDate)
+      }
+    : {
+        title: "",
+        comingDate: "",
+        pendingDate: "",
+        category: "",
+        imgFile: null
+      };
 
   const submitSubjectForm = async (values, actions) => {
     await submitForm(values, actions, submitCallback, setFileName);
@@ -24,21 +50,12 @@ export const SubjectForm = ({ submitCallback }) => {
       })
       .required("Pending date is required"),
     category: yup.string().required("Category is required"),
-    imgFile: yup
-      .object()
-      .required("Image is required")
-      .nullable()
+    imgFile: yup.object().nullable()
   });
 
   return (
     <Formik
-      initialValues={{
-        title: "",
-        comingDate: "",
-        pendingDate: "",
-        category: "",
-        imgFile: null
-      }}
+      initialValues={initialValues}
       validationSchema={SubjectSchema}
       onSubmit={submitSubjectForm}
     >
@@ -52,3 +69,5 @@ export const SubjectForm = ({ submitCallback }) => {
     </Formik>
   );
 };
+
+export default SubjectForm;

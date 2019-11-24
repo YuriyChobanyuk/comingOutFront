@@ -1,7 +1,7 @@
 .toast {
   &__container {
     color: white;
-    position: absolute;
+    position: fixed;
     right: 2rem;
     top: 2rem;
     z-index: 100;
@@ -18,6 +18,8 @@
   }
 
   &__element {
+    min-width: 200px;
+
     &_error {
       background-color: red;
     }

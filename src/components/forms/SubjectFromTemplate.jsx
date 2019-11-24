@@ -60,11 +60,11 @@ export const SubjectFormTemplate = ({
         label="Category"
         options={[
           { value: "", title: "Select subject`s category" },
-          { value: "serial", title: "Serial" },
-          { value: "film", title: "Film" },
-          { value: "book", title: "Book" },
-          { value: "album", title: "Music album" },
-          { value: "anime", title: "Anime" }
+          { value: "Serial", title: "Serial" },
+          { value: "Film", title: "Film" },
+          { value: "Book", title: "Book" },
+          { value: "Album", title: "Music album" },
+          { value: "Anime", title: "Anime" }
         ]}
       />
 

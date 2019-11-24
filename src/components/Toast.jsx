@@ -8,7 +8,7 @@ export const ToastElement = ({ data, removeToast }) => {
          return (
            <Toast
              className={`toast__element_${type}`}
-             delay={3000}
+             delay={5000}
              autohide={true}
              onClose={removeToast.bind(null, id)}
              animation={true}
