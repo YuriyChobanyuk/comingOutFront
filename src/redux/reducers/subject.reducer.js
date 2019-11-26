@@ -25,7 +25,7 @@ const subjectReducer = (state = initialState, actions) => {
       return {
         ...state,
         subjects: state.subjects.filter(
-          subject => subject._id !== actions.payload._id
+          subject => (subject && subject._id !== actions.payload._id)
         )
       };
     case UPDATE_SUBJECT:

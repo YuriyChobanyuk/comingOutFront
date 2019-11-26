@@ -9,7 +9,7 @@ import {
 } from "../redux/actions/subject.action";
 import AnimateHeight from "react-animate-height";
 import SubjectForm from "../components/forms/SubjectForm";
-import { SubjectControlAdmin } from "../components/SubjectControlAdmin";
+import SubjectControlAdmin from "../components/SubjectControlAdmin";
 
 import SubjectCard from "../components/SubjectCard";
 
@@ -39,7 +39,7 @@ const Subject = props => {
   return (
     <Fragment>
       <SubjectCard subject={subject}>
-        <SubjectControlAdmin editFunc={editFunc} subjectTitle={subject.title} />
+        <SubjectControlAdmin editFunc={editFunc} subject={subject} />
       </SubjectCard>
       <AnimateHeight duration={200} height={showForm ? "auto" : 0}>
         <Card className="mt-3">
@@ -59,7 +59,7 @@ const Subject = props => {
 const mapStoreToProps = ({ subjectReducer }, ownProps) => {
   const { id } = ownProps.match.params;
   return {
-    subject: subjectReducer.subjects.find(subject => subject._id === id)
+    subject: subjectReducer.subjects.find(subject => (subject && subject._id === id))
   };
 };
 

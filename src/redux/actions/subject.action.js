@@ -33,8 +33,15 @@ export const updateSubject = subject => ({
 
 export const getSubject = id => dispatch => {
   axiosGetSubject(id)
-  .then(subject => dispatch(addSubject(subject)))
-  .catch(e => dispatch(notifyError(e.message)));
+    .then(subject => {
+      if (subject) {
+        dispatch(addSubject(subject))
+      } else {
+        dispatch(notifyError('There is no such subject'))
+      }
+
+    })
+    .catch(e => dispatch(notifyError(e.message)));
 };
 
 export const getSubjectsList = () => dispatch => {
@@ -53,17 +60,16 @@ export const postSubject = subject => dispatch => {
 };
 
 export const putSubject = (subject, values) => dispatch => {
-  // console.log({ ...subject, ...values });
   axiosUpdateSubject({ ...subject, ...values })
     .then(updatedSubject => dispatch(updateSubject(updatedSubject)))
     .then(() => dispatch(notifySuccess("Subject was updated")))
     .catch(e => dispatch(notifyError(e.message)));
 };
 
-export const deleteSubject = (subject) => dispatch => {
+export const deleteSubject = (subject, history) => dispatch => {
   axiosDeleteSubject(subject)
     .then(deletedSubject => dispatch(removeSubject(deletedSubject)))
-    .then()
+    .then(() => history.push('/admin/subjects'))
     .then(() => dispatch(notifySuccess("Subject was deleted")))
     .catch(e => dispatch(notifyError(e.message)));
-}
+};

@@ -1,9 +1,8 @@
 import { apiURL } from "../configs";
 import axios from "axios";
-import {reformatToMultipart} from './forms.service';
+import { reformatToMultipart } from "./forms.service";
 
 export const postSubject = async values => {
-  
   try {
     const formData = reformatToMultipart(values);
     const result = await axios.post(`${apiURL}/subjects`, formData);
@@ -45,10 +44,13 @@ export const updateSubject = async subject => {
 };
 
 export const deleteSubject = async subject => {
+  console.log(subject);
   try {
-    const res = await axios.delete(`${apiURL}/subjects`, subject);
+    const res = await axios.delete(`${apiURL}/subjects`, {
+      data: { ...subject }
+    });
     return res.data;
   } catch (e) {
     throw new Error("Subject delete error: " + e.message);
   }
-}
+};

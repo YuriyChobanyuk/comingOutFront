@@ -1,15 +1,15 @@
-import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { Home } from './pages/Home';
-import { User } from './pages/User';
-import { Admin } from './pages/Admin';
-import { Login } from './pages/Login';
-import ToastList from './components/ToastList';
+import React, { Fragment } from "react";
+import { Switch, Route } from "react-router-dom";
+import { Home } from "./pages/Home";
+import { User } from "./pages/User";
+import { Admin } from "./pages/Admin";
+import { Login } from "./pages/Login";
+import ToastList from "./components/ToastList";
 
 function App() {
   return (
-    <BrowserRouter>
-    <ToastList />
+    <Fragment>
+      <ToastList />
       <Switch>
         <Route exact path="/">
           <Home />
@@ -24,7 +24,7 @@ function App() {
           <User />
         </Route>
       </Switch>
-    </BrowserRouter>
+    </Fragment>
   );
 }
 
