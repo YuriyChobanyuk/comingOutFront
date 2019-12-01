@@ -8,7 +8,6 @@ export const SelectInput = ({
   handleBlur,
   errors,
   touched,
-  placeholder,
   label,
   options
 }) => (
@@ -19,7 +18,6 @@ export const SelectInput = ({
     <Form.Control
       className={`col ${touched ? (errors ? "is-invalid" : "is-valid") : ""}`}
       as="select"
-      placeholder={placeholder}
       id={fieldName}
       name={fieldName}
       onChange={handleChange}

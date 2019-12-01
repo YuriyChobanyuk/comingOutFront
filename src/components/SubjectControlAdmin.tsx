@@ -4,8 +4,17 @@ import { connect } from "react-redux";
 import { BootstrapModal } from "./Modal";
 import { deleteSubject, putSubject } from "../redux/actions/subject.action";
 import { useHistory } from "react-router-dom";
+import SubjectModel from "../models/subject.model";
+import ModalModel from "../models/modal.model";
 
-const SubjectControlAdmin = ({
+interface ControlProps {
+  subject: SubjectModel;
+  editFunc: () => void;
+  removeSubject: (subject: SubjectModel, history: object) => void;
+  deactivateSubject: (subject: SubjectModel, values: object) => void;
+}
+
+const SubjectControlAdmin: React.FC<ControlProps> = ({
   editFunc,
   subject,
   removeSubject,
@@ -14,13 +23,19 @@ const SubjectControlAdmin = ({
   const [show, setShow] = useState(false);
   const history = useHistory();
 
-  const [modalProps, setModalProps] = useState({});
+  const [modalProps, setModalProps] = useState<ModalModel>({
+    text: "default text",
+    title: "default title",
+    confirmAction: () => {},
+    declineAction: () => {}
+  });
 
-  const handleDelete = () => {
+  const handleDelete = (): void => {
     setModalProps({
       title: "Delete subject?",
       text: `Do you want to delete "${subject.title}" record? It will be unable to restore!`,
-      confirmAction: removeSubject.bind(null, subject, history)
+      confirmAction: removeSubject.bind(null, subject, history),
+      declineAction: () => {}
     });
     setShow(true);
   };
@@ -31,7 +46,8 @@ const SubjectControlAdmin = ({
       text: !isActive
         ? `Do you want to deactivate "${subject.title}" record? It will not be shown in pending list anymore.`
         : `Do you want to activate "${subject.title}" record?`,
-      confirmAction: deactivateSubject.bind(null, subject, { active: isActive })
+      confirmAction: deactivateSubject.bind(null, subject, { active: isActive }),
+      declineAction: () => {}
     });
     setShow(true);
   };
@@ -71,9 +87,10 @@ const SubjectControlAdmin = ({
 };
 
 const mapActionsToProps = dispatch => ({
-  removeSubject: (subject, history) =>
+  removeSubject: (subject: SubjectModel, history: object) =>
     dispatch(deleteSubject(subject, history)),
-  deactivateSubject: (subject, values) => dispatch(putSubject(subject, values))
+  deactivateSubject: (subject: SubjectModel, values: object) =>
+    dispatch(putSubject(subject, values))
 });
 
 export default connect(null, mapActionsToProps)(SubjectControlAdmin);

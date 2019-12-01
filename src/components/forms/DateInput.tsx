@@ -1,7 +1,17 @@
-import React from "react";
+import React, { FocusEvent, ChangeEvent, FC } from "react";
 import { Form } from "react-bootstrap";
 
-export const DateInput = ({
+interface Props {
+  fieldName: string;
+  handleChange: (e: ChangeEvent) => void;
+  value: string;
+  handleBlur: (e: FocusEvent) => void;
+  errors?: string;
+  touched?: boolean;
+  label: string;
+}
+
+export const DateInput: FC<Props> = ({
   fieldName,
   handleChange,
   value,
