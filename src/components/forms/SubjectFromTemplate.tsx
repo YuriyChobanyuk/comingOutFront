@@ -1,11 +1,25 @@
-import React from "react";
+import React, { ChangeEvent, FocusEvent } from "react";
 import { Form, Button } from "react-bootstrap";
 import { TextInput } from "./TextInput";
 import { DateInput } from "./DateInput";
 import { SelectInput } from "./SelectInput";
 import { FileInput } from "./FileInput";
+import { SubjectFormModel } from "../../models/subject.model";
+import {FormikErrors, FormikTouched} from 'formik';
 
-export const SubjectFormTemplate = ({
+interface Props {
+  values: SubjectFormModel;
+  errors: FormikErrors<SubjectFormModel>;
+  touched: FormikTouched<SubjectFormModel>;
+  handleChange: (e: ChangeEvent) => void;
+  handleBlur: (e: FocusEvent) => void;
+  handleSubmit: () => void;
+  setFieldValue: (field: keyof SubjectFormModel, value: any) => void;
+  fileName?: string;
+  setFileName: (fileName: string) => void;
+}
+
+export const SubjectFormTemplate: React.FC<Props> = ({
   values,
   errors,
   touched,

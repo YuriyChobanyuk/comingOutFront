@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Formik } from "formik";
+import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
 
 import {
@@ -7,20 +7,26 @@ import {
   transformDateToInput
 } from "../../services/date.service";
 import { submitForm } from "../../services/forms.service";
-
+import {SubjectFormModel} from '../../models/subject.model';
 import { SubjectFormTemplate } from "./SubjectFromTemplate";
 
-const SubjectForm = ({
+interface Props {
+  initialValue?: SubjectFormModel;
+  submitCallback: () => void;
+}
+
+const SubjectForm: React.FC<Props> = ({
   submitCallback,
   initialValue
 }) => {
   const [fileName, setFileName] = useState(
-    initialValue ? initialValue.imgPath.split("/").pop() : "Choose file..."
+    initialValue && initialValue.imgPath ? initialValue.imgPath.split("/").pop() : "Choose file..."
   );
 
   useEffect(() => {
     
-    if (initialValue) setFileName(initialValue.imgPath.split("/").pop());
+    if (initialValue && initialValue.imgPath)
+      setFileName(initialValue.imgPath.split("/").pop());
   }, [initialValue])
 
   const initialValues = initialValue
@@ -36,7 +42,10 @@ const SubjectForm = ({
         imgFile: null
       };
 
-  const submitSubjectForm = async (values, actions) => {
+  const submitSubjectForm = async (
+    values: SubjectFormModel,
+    actions: FormikHelpers<SubjectFormModel>
+  ) => {
     await submitForm(values, actions, submitCallback, setFileName);
   };
 

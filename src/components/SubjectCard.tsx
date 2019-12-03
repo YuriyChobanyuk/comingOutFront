@@ -1,10 +1,11 @@
 import React from "react";
 import { Row, Image, Card } from "react-bootstrap";
 import { isBoolean } from "util";
+import SubjectModel from "../models/subject.model";
 
 import { apiURL } from "../configs";
 
-export default function SubjectCard(props) {
+export default function SubjectCard(props: { subject: SubjectModel, children: React.ElementType }) {
   const { title, imgPath, ...rest } = props.subject;
 
   return (
@@ -36,22 +37,18 @@ export default function SubjectCard(props) {
                         </div>
                       ))}
                   </div>
-                  <div className="col-4">
-                    {props.children}
-                  </div>
+                  <div className="col-4">{props.children}</div>
                 </Row>
               </Row>
             </div>
           </Row>
         </Card.Body>
       </Card>
-
-      
     </div>
   );
 }
 
-function pipeValue(value) {
+function pipeValue(value: boolean | string): boolean | string {
   if (isBoolean(value)) {
     return (value + "").toUpperCase();
   }
