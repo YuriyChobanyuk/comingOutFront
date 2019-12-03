@@ -1,4 +1,4 @@
-import React, { FocusEvent, FC, ChangeEvent } from "react";
+import React, { ChangeEvent, FocusEvent } from "react";
 
 interface Props {
   fieldName: string;
@@ -8,32 +8,43 @@ interface Props {
   errors?: string;
   touched?: boolean;
   label: string;
+  options: { value: string; title: string }[];
 }
 
-export const DateInput: FC<Props> = ({
+export const SelectInput: React.FC<Props> = ({
          fieldName,
          handleChange,
          value,
          handleBlur,
          errors,
          touched,
-         label
+         label,
+         options
        }) => (
-         <div className="form group mb-3 row align-items-baseline position-relative">
+         <div className="row mb-3 form-group align-items-baseline position-relative">
            <label className="col-2" htmlFor={fieldName}>
              {label}
            </label>
-           <input
-             className={`col form-control ${
+           <select
+             className={`col custom-select ${
                touched ? (errors ? "is-invalid" : "is-valid") : ""
              }`}
-             type="date"
              id={fieldName}
              name={fieldName}
              onChange={handleChange}
              onBlur={handleBlur}
              value={value}
-           />
+           >
+             {options.map(option => (
+               <option
+                 value={option.value}
+                 disabled={!option.value}
+                 key={option.title}
+               >
+                 {option.title}
+               </option>
+             ))}
+           </select>
            <div className="invalid-feedback absolute-feedback">
              {errors ? errors : ""}
            </div>
