@@ -4,6 +4,7 @@ import { Home } from "./pages/Home";
 import { User } from "./pages/User";
 import { Admin } from "./pages/Admin";
 import { Login } from "./pages/Login";
+import PrivateRoute from './components/PrivateRoute';
 import ToastList from "./components/ToastList";
 
 function App() {
@@ -17,9 +18,9 @@ function App() {
         <Route path="/login">
           <Login />
         </Route>
-        <Route path="/admin">
+        <PrivateRoute path="/admin">
           <Admin />
-        </Route>
+        </PrivateRoute>
         <Route path="/user">
           <User />
         </Route>

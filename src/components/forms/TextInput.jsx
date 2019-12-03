@@ -9,15 +9,20 @@ export const TextInput = ({
   errors,
   touched,
   placeholder,
-  label
+  label,
+  type
 }) => (
   <Form.Group className="row align-items-baseline position-relative">
-    <Form.Label className="col-2" htmlFor={fieldName}>
-      {label}
-    </Form.Label>
+    {label ? (
+      <Form.Label className="col-2" htmlFor={fieldName}>
+        {label}
+      </Form.Label>
+    ) : (
+      false
+    )}
     <Form.Control
       className={`col ${touched ? (errors ? "is-invalid" : "is-valid") : ""}`}
-      type="text"
+      type={type ? type : "text"}
       placeholder={placeholder}
       id={fieldName}
       name={fieldName}
@@ -25,7 +30,11 @@ export const TextInput = ({
       onBlur={handleBlur}
       value={value}
     />
-    <div className="invalid-feedback absolute-feedback">
+    <div
+      className={["invalid-feedback", label ? "absolute-feedback" : ""].join(
+        " "
+      )}
+    >
       {errors ? errors : ""}
     </div>
   </Form.Group>
