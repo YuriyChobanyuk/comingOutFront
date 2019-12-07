@@ -1,8 +1,9 @@
+import SubjectModel, { SubjectFormModel } from './../models/subject.model';
 import { apiURL } from "../configs";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { reformatToMultipart } from "./forms.service";
 
-export const postSubject = async values => {
+export const postSubject = async (values: SubjectFormModel): Promise<SubjectModel> => {
   try {
     const formData = reformatToMultipart(values);
     const result = await axios.post(`${apiURL}/subjects`, formData);
@@ -12,18 +13,20 @@ export const postSubject = async values => {
   }
 };
 
-export const getSubjects = async () => {
-  let res;
-  try {
-    res = await axios.get(`${apiURL}/subjects`);
-  } catch (e) {
-    throw new Error("Subjects get error: " + e.message);
-  }
-  return res.data;
-};
+export const getSubjects = async (): Promise<{
+         subjectsList: SubjectModel[];
+       }> => {
+         let res: AxiosResponse<{ subjectsList: SubjectModel[] }>;
+         try {
+           res = await axios.get(`${apiURL}/subjects`);
+         } catch (e) {
+           throw new Error("Subjects get error: " + e.message);
+         }
+         return res.data;
+       };
 
-export const getSubject = async id => {
-  let res;
+export const getSubject = async (id: string): Promise<SubjectModel> => {
+  let res: AxiosResponse<SubjectModel>;
   try {
     res = await axios.get(`${apiURL}/subjects/${id}`);
   } catch (e) {
@@ -33,7 +36,7 @@ export const getSubject = async id => {
   return res.data;
 };
 
-export const updateSubject = async subject => {
+export const updateSubject = async (subject: SubjectModel): Promise<SubjectModel> => {
   try {
     const formData = reformatToMultipart(subject);
     const res = await axios.put(`${apiURL}/subjects`, formData);
@@ -43,7 +46,7 @@ export const updateSubject = async subject => {
   }
 };
 
-export const deleteSubject = async subject => {
+export const deleteSubject = async (subject: SubjectModel): Promise<SubjectModel> => {
   console.log(subject);
   try {
     const res = await axios.delete(`${apiURL}/subjects`, {

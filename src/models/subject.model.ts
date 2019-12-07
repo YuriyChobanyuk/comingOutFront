@@ -2,8 +2,8 @@ export default interface SubjectModel {
   title: string;
   active: boolean;
   comingDate: string;
-  pendingDate: Date;
-  creationDate: Date;
+  pendingDate: string;
+  creationDate: string;
   category: string;
   _id: string;
   imgPath: string;

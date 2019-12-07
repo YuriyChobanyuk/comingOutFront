@@ -1,6 +1,17 @@
-import React from "react";
+import React, { ChangeEvent, FocusEvent } from "react";
 import { Form, Button } from "react-bootstrap";
 import { TextInput } from "./TextInput";
+import {SignUpModel} from '../../models/auth.model';
+import { FormikErrors, FormikTouched } from "formik";
+
+interface Props {
+  values: SignUpModel;
+  errors: FormikErrors<SignUpModel>;
+  touched: FormikTouched<SignUpModel>;
+  handleChange: (e: ChangeEvent) => void;
+  handleBlur: (e: FocusEvent) => void;
+  handleSubmit: () => void;
+}
 
 const SignUpFormTemplate = ({
   values,

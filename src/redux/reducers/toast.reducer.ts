@@ -1,10 +1,19 @@
-import { TOAST_ADD, TOAST_REMOVE } from "../actions/actionTypes";
+import NotificationModel from "../../models/notification.model";
+import {
+  TOAST_ADD,
+  TOAST_REMOVE,
+  alertActionType
+} from "../actions/actionTypes";
 
-const initialState = {
+export interface AlertInitialState {
+  alerts: NotificationModel[];
+}
+
+const initialState: AlertInitialState = {
   alerts: []
 };
 
-const toastReducer = (state = initialState, action) => {
+const toastReducer = (state = initialState, action: alertActionType) => {
   switch (action.type) {
     case TOAST_ADD:
       return {

@@ -1,8 +1,19 @@
-import React from "react";
+import React, { ChangeEvent, FocusEvent } from "react";
 import { Form, Button } from "react-bootstrap";
 import { TextInput } from "./TextInput";
+import {LoginModel} from '../../models/auth.model';
+import { FormikErrors, FormikTouched } from "formik";
 
-const LoginFormTemplate = ({
+interface Props {
+  values: LoginModel;
+  errors: FormikErrors<LoginModel>;
+  touched: FormikTouched<LoginModel>;
+  handleChange: (e: ChangeEvent) => void;
+  handleBlur: (e: FocusEvent) => void;
+  handleSubmit: () => void;
+}
+
+const LoginFormTemplate: React.FC<Props> = ({
   values,
   errors,
   touched,

@@ -8,11 +8,11 @@ export const Login = () => {
   const tabs = [
     {
       title: "sign up",
-      component: <SignUpForm submitCallback={() => {}} />
+      component: <SignUpForm submitCallback={() => Promise.resolve()} />
     },
     {
       title: "login",
-      component: <LoginForm submitCallback={() => {}} />
+      component: <LoginForm submitCallback={() => Promise.resolve()} />
     }
   ];
   return (

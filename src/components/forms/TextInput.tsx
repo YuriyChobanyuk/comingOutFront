@@ -7,7 +7,7 @@ interface Props {
   handleBlur: (e: FocusEvent) => void;
   errors?: string;
   touched?: boolean;
-  label: string;
+  label?: string;
   placeholder: string;
   type?: string;
 }

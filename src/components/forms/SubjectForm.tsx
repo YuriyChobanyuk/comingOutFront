@@ -7,27 +7,26 @@ import {
   transformDateToInput
 } from "../../services/date.service";
 import { submitForm } from "../../services/forms.service";
-import {SubjectFormModel} from '../../models/subject.model';
+import { SubjectFormModel } from "../../models/subject.model";
 import { SubjectFormTemplate } from "./SubjectFromTemplate";
+import { AppThunk } from "../../redux/state.model";
 
 interface Props {
   initialValue?: SubjectFormModel;
-  submitCallback: () => void;
+  submitCallback: (values: SubjectFormModel) => AppThunk | Promise<any>;
 }
 
-const SubjectForm: React.FC<Props> = ({
-  submitCallback,
-  initialValue
-}) => {
+const SubjectForm: React.FC<Props> = ({ submitCallback, initialValue }) => {
   const [fileName, setFileName] = useState(
-    initialValue && initialValue.imgPath ? initialValue.imgPath.split("/").pop() : "Choose file..."
+    initialValue && initialValue.imgPath
+      ? initialValue.imgPath.split("/").pop()
+      : "Choose file..."
   );
 
   useEffect(() => {
-    
     if (initialValue && initialValue.imgPath)
       setFileName(initialValue.imgPath.split("/").pop());
-  }, [initialValue])
+  }, [initialValue]);
 
   const initialValues = initialValue
     ? {
@@ -63,19 +62,21 @@ const SubjectForm: React.FC<Props> = ({
   });
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validationSchema={SubjectSchema}
-      onSubmit={submitSubjectForm}
-    >
-      {props => (
-        <SubjectFormTemplate
-          {...props}
-          fileName={fileName}
-          setFileName={setFileName}
-        />
-      )}
-    </Formik>
+    <div className="edit-form">
+      <Formik
+        initialValues={initialValues}
+        validationSchema={SubjectSchema}
+        onSubmit={submitSubjectForm}
+      >
+        {props => (
+          <SubjectFormTemplate
+            {...props}
+            fileName={fileName}
+            setFileName={setFileName}
+          />
+        )}
+      </Formik>
+    </div>
   );
 };
 

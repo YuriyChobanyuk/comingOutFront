@@ -2,16 +2,20 @@ import React from "react";
 import SignUpFormTemplate from "./SignUpFormTemplate";
 import { Formik } from "formik";
 import * as yup from "yup";
-import PropTypes from "prop-types";
+import { SignUpModel } from "../../models/auth.model";
 
 import { submitForm } from "../../services/forms.service";
 
-const LoginForm = ({ submitCallback }) => {
+interface Props {
+  submitCallback: (values: object) => Promise<any>;
+}
+
+const LoginForm: React.FC<Props> = ({ submitCallback }) => {
   const submitLoginForm = async (values, actions) => {
     await submitForm(values, actions, submitCallback);
   };
 
-  const initialValues = {
+  const initialValues: SignUpModel = {
     name: "",
     email: "",
     password: ""
@@ -42,10 +46,6 @@ const LoginForm = ({ submitCallback }) => {
       {props => <SignUpFormTemplate {...props}></SignUpFormTemplate>}
     </Formik>
   );
-};
-
-LoginForm.propTypes = {
-  submitCallback: PropTypes.func
 };
 
 export default LoginForm;

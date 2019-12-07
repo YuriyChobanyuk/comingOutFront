@@ -5,7 +5,10 @@ import SubjectModel from "../models/subject.model";
 
 import { apiURL } from "../configs";
 
-export default function SubjectCard(props: { subject: SubjectModel, children: React.ElementType }) {
+export default function SubjectCard(props: {
+  subject: SubjectModel;
+  children: JSX.Element;
+}) {
   const { title, imgPath, ...rest } = props.subject;
 
   return (

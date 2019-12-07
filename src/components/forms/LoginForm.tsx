@@ -1,17 +1,21 @@
 import React from "react";
 import LoginFormTemplate from "./LoginFormTemplate";
-import { Formik } from "formik";
+import { Formik, FormikHelpers } from "formik";
 import * as yup from "yup";
-import PropTypes from 'prop-types';
+import {LoginModel} from '../../models/auth.model';
 
 import { submitForm } from "../../services/forms.service";
 
-const LoginForm = ({ submitCallback }) => {
-  const submitLoginForm = async (values, actions) => {
+interface Props {
+  submitCallback: (values: object) => Promise<any>;
+}
+
+const LoginForm: React.FC<Props> = ({ submitCallback }) => {
+  const submitLoginForm = async (values: LoginModel, actions: FormikHelpers<LoginModel>) => {
     await submitForm(values, actions, submitCallback);
   };
 
-  const initialValues = {
+  const initialValues: LoginModel = {
     email: "",
     password: ""
   };
@@ -21,7 +25,7 @@ const LoginForm = ({ submitCallback }) => {
     password: yup
       .string()
       .min(6)
-      .max(20)
+      .max(50)
       .required("Password is required")
   });
 
@@ -35,9 +39,5 @@ const LoginForm = ({ submitCallback }) => {
     </Formik>
   );
 };
-
-LoginForm.propTypes = {
-  submitCallback: PropTypes.func
-}
 
 export default LoginForm;

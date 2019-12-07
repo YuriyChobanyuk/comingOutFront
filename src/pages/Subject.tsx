@@ -1,37 +1,50 @@
 import React, { useEffect, useState, Fragment } from "react";
-import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
+import { withRouter, match, RouteComponentProps } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Card } from "react-bootstrap";
 import {
-  addSubject,
-  getSubject,
-  putSubject
+  getSubject as getSubjectAction,
+  putSubject as putSubjectAction
 } from "../redux/actions/subject.action";
 import AnimateHeight from "react-animate-height";
 import SubjectForm from "../components/forms/SubjectForm";
 import SubjectControlAdmin from "../components/SubjectControlAdmin";
 
 import SubjectCard from "../components/SubjectCard";
+import { RootState } from "../redux/rootReducer";
+import SubjectModel, { SubjectFormModel } from "../models/subject.model";
 
-const Subject = props => {
-  const { id } = props.match.params;
-  let subject = props.subject;
+interface Props extends RouteComponentProps {
+  match: match<{id: string}>
+}
+
+const Subject: React.FC<Props> = ({ match }) => {
+  const { id } = match.params;
 
   const [showForm, setShowForm] = useState(false);
+  const dispatch = useDispatch();
+
+  const subject = useSelector(({ subjectReducer }: RootState) =>
+    subjectReducer.subjects.find(subject => subject && subject._id === id)
+  );
+
+  const putSubject = (subject: SubjectModel, values: SubjectFormModel) =>
+    dispatch(putSubjectAction(subject, values));
+  const getSubject = (id: string) => dispatch(getSubjectAction(id));
 
   const editFunc = () => {
     setShowForm(!showForm);
   };
 
   const submitUpdate = () => {
-    const subject = props.subject;
-    return values => {
-      props.putSubject(subject, values);
+    return async (values: SubjectFormModel) => {
+      if (!subject) return;
+      putSubject(subject, values);
     };
   };
 
   useEffect(() => {
-    if (!subject) props.getSubject(id);
+    if (!subject) getSubject(id);
   });
 
   if (!subject) return <h1>No subject</h1>;
@@ -45,8 +58,7 @@ const Subject = props => {
         <Card className="mt-3">
           <Card.Body>
             <SubjectForm
-              className="edit-form"
-              initialValue={props.subject}
+              initialValue={subject}
               submitCallback={submitUpdate()}
             ></SubjectForm>
           </Card.Body>
@@ -56,19 +68,4 @@ const Subject = props => {
   );
 };
 
-const mapStoreToProps = ({ subjectReducer }, ownProps) => {
-  const { id } = ownProps.match.params;
-  return {
-    subject: subjectReducer.subjects.find(subject => (subject && subject._id === id))
-  };
-};
-
-const mapActionsToProps = dispatch => {
-  return {
-    addSubject: subject => dispatch(addSubject(subject)),
-    putSubject: (subject, values) => dispatch(putSubject(subject, values)),
-    getSubject: id => dispatch(getSubject(id))
-  };
-};
-
-export default withRouter(connect(mapStoreToProps, mapActionsToProps)(Subject));
+export default withRouter(Subject);

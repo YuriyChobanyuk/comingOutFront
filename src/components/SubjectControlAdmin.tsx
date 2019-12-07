@@ -6,12 +6,16 @@ import { deleteSubject, putSubject } from "../redux/actions/subject.action";
 import { useHistory } from "react-router-dom";
 import SubjectModel from "../models/subject.model";
 import ModalModel from "../models/modal.model";
+import { History } from "history";
 
 interface ControlProps {
   subject: SubjectModel;
   editFunc: () => void;
-  removeSubject: (subject: SubjectModel, history: object) => void;
-  deactivateSubject: (subject: SubjectModel, values: object) => void;
+  removeSubject: (subject: SubjectModel, history: History) => void;
+  deactivateSubject: (
+    subject: SubjectModel,
+    values: { active: boolean }
+  ) => void;
 }
 
 const SubjectControlAdmin: React.FC<ControlProps> = ({
@@ -40,13 +44,15 @@ const SubjectControlAdmin: React.FC<ControlProps> = ({
     setShow(true);
   };
 
-  const changeActive = isActive => {
+  const changeActive = (isActive: boolean) => {
     setModalProps({
       title: "Remove subject from pending list?",
       text: !isActive
         ? `Do you want to deactivate "${subject.title}" record? It will not be shown in pending list anymore.`
         : `Do you want to activate "${subject.title}" record?`,
-      confirmAction: deactivateSubject.bind(null, subject, { active: isActive }),
+      confirmAction: deactivateSubject.bind(null, subject, {
+        active: isActive
+      }),
       declineAction: () => {}
     });
     setShow(true);
@@ -86,10 +92,10 @@ const SubjectControlAdmin: React.FC<ControlProps> = ({
   );
 };
 
-const mapActionsToProps = dispatch => ({
-  removeSubject: (subject: SubjectModel, history: object) =>
+const mapActionsToProps = (dispatch) => ({
+  removeSubject: (subject: SubjectModel, history: History) =>
     dispatch(deleteSubject(subject, history)),
-  deactivateSubject: (subject: SubjectModel, values: object) =>
+  deactivateSubject: (subject: SubjectModel, values: { active: boolean }) =>
     dispatch(putSubject(subject, values))
 });
 

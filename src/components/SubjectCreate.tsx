@@ -1,14 +1,16 @@
 import React from "react";
 import SubjectForm from "./forms/SubjectForm";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { postSubject } from "../redux/actions/subject.action";
+import { SubjectFormModel } from "../models/subject.model";
 
-const SubjectCreate = ({submitSubject}) => {
+const SubjectCreate = () => {
+  const dispatch = useDispatch();
+
+  const submitSubject = (subject: SubjectFormModel) =>
+    dispatch(postSubject(subject));
+
   return <SubjectForm submitCallback={submitSubject}></SubjectForm>;
 };
 
-const mapActionsToProps = dispatch => ({
-  submitSubject: subject => dispatch(postSubject(subject))
-});
-
-export default connect(null, mapActionsToProps)(SubjectCreate);
+export default SubjectCreate;

@@ -2,14 +2,20 @@ import {
   APPEND_SUBJECTS,
   ADD_SUBJECT,
   REMOVE_SUBJECT,
-  UPDATE_SUBJECT
+  UPDATE_SUBJECT,
+  subjectActionTypes
 } from "../actions/actionTypes";
+import SubjectModel from "../../models/subject.model";
 
-const initialState = {
+export interface SubjectsInitialState {
+  subjects: SubjectModel[];
+}
+
+const initialState: SubjectsInitialState = {
   subjects: []
 };
 
-const subjectReducer = (state = initialState, actions) => {
+const subjectReducer = (state = initialState, actions: subjectActionTypes) => {
   switch (actions.type) {
     case APPEND_SUBJECTS:
       return {
@@ -25,11 +31,10 @@ const subjectReducer = (state = initialState, actions) => {
       return {
         ...state,
         subjects: state.subjects.filter(
-          subject => (subject && subject._id !== actions.payload._id)
+          subject => subject && subject._id !== actions.payload._id
         )
       };
     case UPDATE_SUBJECT:
-      console.log(actions.payload)
       return {
         ...state,
         subjects: state.subjects.map(subject => {

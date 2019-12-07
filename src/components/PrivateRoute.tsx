@@ -1,12 +1,17 @@
 import React from 'react';
 import {Route, Redirect} from 'react-router-dom';
 import {isAuthenticated} from '../services/auth.service';
+import { Location } from 'history';
 
-const PrivateRoute = ({ children, ...rest }) => {
+interface Props {
+  children: JSX.Element
+}
+
+const PrivateRoute: React.FC<Props> = ({ children, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={({ location }) =>
+      render={({ location }: {location: Location}) =>
         isAuthenticated() ? (
           children
         ) : (
