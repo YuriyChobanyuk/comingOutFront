@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FocusEvent } from "react";
 import { Form, Button } from "react-bootstrap";
 import { TextInput } from "./TextInput";
-import {LoginModel} from '../../models/auth.model';
+import { LoginModel } from "../../models/auth.model";
 import { FormikErrors, FormikTouched } from "formik";
 
 interface Props {
@@ -24,6 +24,7 @@ const LoginFormTemplate: React.FC<Props> = ({
   return (
     <Form className="mt-3" onSubmit={handleSubmit}>
       <TextInput
+        id={"login-email"}
         type={"email"}
         fieldName={"email"}
         value={values.email}
@@ -35,6 +36,7 @@ const LoginFormTemplate: React.FC<Props> = ({
       ></TextInput>
 
       <TextInput
+        id={"login-password"}
         type={"password"}
         fieldName={"password"}
         value={values.password}

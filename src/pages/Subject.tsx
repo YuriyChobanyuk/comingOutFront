@@ -15,7 +15,7 @@ import { RootState } from "../redux/rootReducer";
 import SubjectModel, { SubjectFormModel } from "../models/subject.model";
 
 interface Props extends RouteComponentProps {
-  match: match<{id: string}>
+  match: match<{ id: string }>;
 }
 
 const Subject: React.FC<Props> = ({ match }) => {
@@ -36,11 +36,8 @@ const Subject: React.FC<Props> = ({ match }) => {
     setShowForm(!showForm);
   };
 
-  const submitUpdate = () => {
-    return async (values: SubjectFormModel) => {
-      if (!subject) return;
-      putSubject(subject, values);
-    };
+  const submitUpdate = (subject: SubjectModel) => {
+    return (values: SubjectFormModel) => putSubject(subject, values);
   };
 
   useEffect(() => {
@@ -59,7 +56,7 @@ const Subject: React.FC<Props> = ({ match }) => {
           <Card.Body>
             <SubjectForm
               initialValue={subject}
-              submitCallback={submitUpdate()}
+              submitCallback={submitUpdate(subject)}
             ></SubjectForm>
           </Card.Body>
         </Card>

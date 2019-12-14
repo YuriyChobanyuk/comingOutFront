@@ -1,19 +1,17 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Table } from "react-bootstrap";
-import { withRouter } from "react-router-dom";
-import { History, Location } from "history";
+import { useHistory, useLocation } from "react-router-dom";
+import { DataTable } from "./DataTable";
+import SubjectModel from "../models/subject.model";
+import { SubjectsControlPanel } from "./SubjectsControlPanel";
 
 import { getSubjectsList } from "../redux/actions/subject.action";
 import { RootState } from "../redux/rootReducer";
 
-interface Props {
-  history: History;
-  location: Location;
-}
-
-const SubjectsList: React.FC<Props> = ({ history, location }) => {
+const SubjectsList: React.FC = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
 
   const getSubjects = () => dispatch(getSubjectsList());
 
@@ -30,25 +28,16 @@ const SubjectsList: React.FC<Props> = ({ history, location }) => {
   };
 
   return (
-    <Table striped bordered hover size="sm" className="mt-3">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Coming date</th>
-          <th>Category</th>
-        </tr>
-      </thead>
-      <tbody>
-        {subjects.map(({ title, comingDate, category, _id }) => (
-          <tr key={_id} onClick={moveToSubject.bind(null, _id)}>
-            <td>{title}</td>
-            <td>{comingDate}</td>
-            <td>{category}</td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
+    <SubjectsControlPanel subjectsList={subjects}>
+      {({ filteredList }) => (
+        <DataTable<SubjectModel>
+          data={filteredList}
+          fields={["title", "comingDate", "category", "pendingDate"]}
+          recordAction={moveToSubject}
+        ></DataTable>
+      )}
+    </SubjectsControlPanel>
   );
 };
 
-export default withRouter(SubjectsList);
+export default SubjectsList;

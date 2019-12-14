@@ -1,0 +1,38 @@
+$option-distance: 40px;
+
+.avatar-image {
+  max-width: $option-distance;
+  transition: box-shadow 0.2s ease;
+  border: 2px solid lightblue;
+
+  &:hover {
+    box-shadow: 0px 0px 10px wheat;
+    cursor: pointer;
+  }
+}
+
+.user-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &__name {
+    margin-right: 1rem;
+
+  }
+  &__options {
+    position: absolute;
+    right: $option-distance;
+    top: 0;
+    z-index: 1001;
+    transform: translateX(-30px);
+    min-width: 250px;
+    color: black;
+    cursor: pointer;
+
+    & li:hover {
+      transition: background-color 0.2s;
+      background-color: #aaa;
+    }
+  }
+}

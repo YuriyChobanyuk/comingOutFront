@@ -13,7 +13,7 @@ interface Props {
   handleSubmit: () => void;
 }
 
-const SignUpFormTemplate = ({
+const SignUpFormTemplate: React.FC<Props> = ({
   values,
   errors,
   touched,
@@ -24,6 +24,7 @@ const SignUpFormTemplate = ({
   return (
     <Form className="mt-3" onSubmit={handleSubmit}>
       <TextInput
+        id={"signUp-name"}
         type={"text"}
         fieldName={"name"}
         value={values.name}
@@ -35,6 +36,7 @@ const SignUpFormTemplate = ({
       ></TextInput>
 
       <TextInput
+        id={"signUp-email"}
         type={"email"}
         fieldName={"email"}
         value={values.email}
@@ -46,6 +48,7 @@ const SignUpFormTemplate = ({
       ></TextInput>
 
       <TextInput
+        id={"signUp-password"}
         type={"password"}
         fieldName={"password"}
         value={values.password}

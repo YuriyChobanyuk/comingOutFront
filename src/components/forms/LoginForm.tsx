@@ -5,9 +5,10 @@ import * as yup from "yup";
 import {LoginModel} from '../../models/auth.model';
 
 import { submitForm } from "../../services/forms.service";
+import { AppThunk } from "../../redux/state.model";
 
 interface Props {
-  submitCallback: (values: object) => Promise<any>;
+  submitCallback: (values: LoginModel) => Promise<any> | AppThunk;
 }
 
 const LoginForm: React.FC<Props> = ({ submitCallback }) => {

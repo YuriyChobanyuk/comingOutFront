@@ -1,5 +1,6 @@
 import SubjectModel from "../../models/subject.model";
 import NotificationModel from "../../models/notification.model";
+import { UserModel } from "../../models/user.model";
 
 // Subject actions
 export const ADD_SUBJECT = "ADD_SUBJECT";
@@ -48,3 +49,27 @@ interface removeToastAction {
 }
 
 export type alertActionType = addToastAction | removeToastAction;
+
+// User actions
+export const USER_ADD = "USER_ADD";
+export const USER_UPDATE = "USER_UPDATE";
+export const USER_REMOVE = "USER_REMOVE";
+
+interface addUserAction {
+  type: typeof USER_ADD;
+  payload: UserModel;
+}
+
+interface updateUserAction {
+  type: typeof USER_UPDATE;
+  payload: UserModel;
+}
+
+interface removeUserAction {
+  type: typeof USER_REMOVE;
+}
+
+export type userActionType =
+  | addUserAction
+  | removeUserAction
+  | updateUserAction;

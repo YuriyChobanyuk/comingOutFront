@@ -10,6 +10,7 @@ interface Props {
   label?: string;
   placeholder: string;
   type?: string;
+  id?: string;
 }
 
 export const TextInput: React.FC<Props> = ({
@@ -21,7 +22,8 @@ export const TextInput: React.FC<Props> = ({
   touched,
   placeholder,
   label,
-  type
+  type,
+  id
 }) => (
   <div className="form-group mb-3 row align-items-baseline position-relative">
     {label ? (
@@ -35,13 +37,13 @@ export const TextInput: React.FC<Props> = ({
       className={`col form-control ${touched ? (errors ? "is-invalid" : "is-valid") : ""}`}
       type={type ? type : "text"}
       placeholder={placeholder}
-      id={fieldName}
+      id={id || fieldName}
       name={fieldName}
       onChange={handleChange}
       onBlur={handleBlur}
       value={value}
     />
-    <div className="invalid-feedback absolute-feedback">
+    <div className={`invalid-feedback ${label ? 'absolute-feedback': ''}`}>
       {errors ? errors : ""}
     </div>
   </div>
