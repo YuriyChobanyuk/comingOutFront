@@ -2,6 +2,7 @@ import React from "react";
 import { Row, Image, Card } from "react-bootstrap";
 import { isBoolean } from "util";
 import SubjectModel from "../models/subject.model";
+import {format} from 'date-fns';
 
 import { apiURL } from "../configs";
 
@@ -56,7 +57,7 @@ function pipeValue(value: boolean | string): boolean | string {
     return (value + "").toUpperCase();
   }
   if (/^\d{4}-\d{2}-\d{2}/.test(value)) {
-    return new Date(value).toLocaleDateString();
+    return format(new Date(value), 'd-M-yyyy');
   }
   return value;
 }

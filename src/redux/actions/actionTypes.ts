@@ -1,12 +1,15 @@
 import SubjectModel from "../../models/subject.model";
 import NotificationModel from "../../models/notification.model";
 import { UserModel } from "../../models/user.model";
+import { FilterActiveEvents } from "../../models/types.model";
 
 // Subject actions
 export const ADD_SUBJECT = "ADD_SUBJECT";
 export const APPEND_SUBJECTS = "APPEND_SUBJECTS";
 export const REMOVE_SUBJECT = "REMOVE_SUBJECT";
 export const UPDATE_SUBJECT = "UPDATE_SUBJECT";
+export const UPDATE_SUBJECT_SEARCH = "UPDATE_SUBJECT_SEARCH";
+export const UPDATE_SUBJECT_ACTIVITY = "UPDATE_SUBJECT_ACTIVITY";
 
 interface addSubjectAction {
   type: typeof ADD_SUBJECT;
@@ -27,12 +30,23 @@ interface updateSubjectAction {
   type: typeof UPDATE_SUBJECT;
   payload: SubjectModel;
 }
+interface updateSubjectSearch {
+  type: typeof UPDATE_SUBJECT_SEARCH;
+  payload: string | null;
+}
+
+interface updateSubjectActivity {
+  type: typeof UPDATE_SUBJECT_ACTIVITY;
+  payload: FilterActiveEvents | null;
+}
 
 export type subjectActionTypes =
   | addSubjectAction
   | appendSubjectsAction
   | removeSubjectAction
-  | updateSubjectAction;
+  | updateSubjectAction
+  | updateSubjectSearch
+  | updateSubjectActivity;
 
 // Toast actions
 export const TOAST_ADD = "TOAST_ADD";

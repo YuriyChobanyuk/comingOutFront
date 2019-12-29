@@ -1,10 +1,13 @@
+import { debounce } from "lodash";
 import { SubjectFormModel } from "./../../models/subject.model";
 import {
   ADD_SUBJECT,
   APPEND_SUBJECTS,
   REMOVE_SUBJECT,
   UPDATE_SUBJECT,
-  subjectActionTypes
+  subjectActionTypes,
+  UPDATE_SUBJECT_SEARCH,
+  UPDATE_SUBJECT_ACTIVITY
 } from "./actionTypes";
 import {
   getSubject as axiosGetSubject,
@@ -17,6 +20,8 @@ import { notifyError, notifySuccess } from "./toast.actions";
 import SubjectModel from "../../models/subject.model";
 import { AppThunk } from "../state.model";
 import { History } from "history";
+import { FilterActiveEvents } from "../../models/types.model";
+import { Dispatch } from "redux";
 
 export const addSubject = (subject: SubjectModel): subjectActionTypes => ({
   type: ADD_SUBJECT,
@@ -38,6 +43,20 @@ export const updateSubject = (subject: SubjectModel): subjectActionTypes => ({
   payload: subject
 });
 
+export const updateSubjectSearch = (
+  search: string | null
+): subjectActionTypes => ({
+  type: UPDATE_SUBJECT_SEARCH,
+  payload: search
+});
+
+export const updateSubjectActivity = (
+  activity: FilterActiveEvents | null
+): subjectActionTypes => ({
+  type: UPDATE_SUBJECT_ACTIVITY,
+  payload: activity
+});
+
 export const getSubject = (id: string): AppThunk => dispatch => {
   axiosGetSubject(id)
     .then(subject => {
@@ -50,13 +69,32 @@ export const getSubject = (id: string): AppThunk => dispatch => {
     .catch((e: Error) => dispatch(notifyError(e.message)));
 };
 
-export const getSubjectsList = (): AppThunk => dispatch => {
-  axiosGetSubjects()
+export const getSubjectsList = (
+  search: string | null,
+  activity: FilterActiveEvents | null
+): AppThunk => dispatch => {
+  axiosGetSubjects(search, activity)
     .then(resObject => dispatch(appendSubjects(resObject.subjectsList)))
     .catch(e => {
       dispatch(notifyError(e.message));
     });
 };
+
+const innerFunction = debounce((dispatch: Dispatch, search: string | null,
+  activity: FilterActiveEvents | null) => {
+  axiosGetSubjects(search, activity)
+        .then(resObject => dispatch(appendSubjects(resObject.subjectsList)))
+        .catch(e => {
+          dispatch(notifyError(e.message));
+        });
+}, 300, { leading: true, trailing: true });
+
+
+export const getSubjectsListWithDebounce = (
+  search: string | null,
+  activity: FilterActiveEvents | null
+): AppThunk => dispatch => innerFunction(dispatch, search, activity)
+  
 
 export const postSubject = (
   subject: SubjectFormModel

@@ -1,6 +1,7 @@
 import SubjectModel, { SubjectFormModel } from "./../models/subject.model";
 import axios, { AxiosResponse } from "axios";
 import { reformatToMultipart } from "./forms.service";
+import { FilterActiveEvents } from "../models/types.model";
 
 export const postSubject = async (
   values: SubjectFormModel
@@ -14,12 +15,27 @@ export const postSubject = async (
   }
 };
 
-export const getSubjects = async (): Promise<{
+export const getSubjects = async (
+  search: string | null,
+  activity: FilterActiveEvents | null
+): Promise<{
   subjectsList: SubjectModel[];
 }> => {
   let res: AxiosResponse<{ subjectsList: SubjectModel[] }>;
+
+  let paramsObj: {
+    search?: string | null;
+    activity?: FilterActiveEvents | null;
+  } = {};
+  search && Object.assign(paramsObj, { search });
+  activity && Object.assign(paramsObj, { activity });
+
   try {
-    res = await axios.get(`/subjects`);
+    res = await axios.get(`/subjects`, {
+      params: {
+        ...paramsObj
+      }
+    });
   } catch (e) {
     throw new Error("Subjects get error: " + e.message);
   }

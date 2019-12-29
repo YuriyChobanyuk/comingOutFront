@@ -15,6 +15,11 @@ $transX: -10px;
 .table__header {
   position: relative;
 
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
   &_increase {
     &::before {
       @extend %arrow-element;

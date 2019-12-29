@@ -1,3 +1,4 @@
+import { UPDATE_SUBJECT_SEARCH, UPDATE_SUBJECT_ACTIVITY } from "./../actions/actionTypes";
 import {
   APPEND_SUBJECTS,
   ADD_SUBJECT,
@@ -6,13 +7,22 @@ import {
   subjectActionTypes
 } from "../actions/actionTypes";
 import SubjectModel from "../../models/subject.model";
+import { FilterActiveEvents } from "../../models/types.model";
 
 export interface SubjectsInitialState {
   subjects: SubjectModel[];
+  subjectsFilters: {
+    search: string | null;
+    activity: FilterActiveEvents | null;
+  };
 }
 
 const initialState: SubjectsInitialState = {
-  subjects: []
+  subjects: [],
+  subjectsFilters: {
+    search: null,
+    activity: "All"
+  }
 };
 
 const subjectReducer = (state = initialState, actions: subjectActionTypes) => {
@@ -42,6 +52,16 @@ const subjectReducer = (state = initialState, actions: subjectActionTypes) => {
             return actions.payload;
           } else return subject;
         })
+      };
+    case UPDATE_SUBJECT_SEARCH:
+      return {
+        ...state,
+        subjectsFilters: { ...state.subjectsFilters, search: actions.payload }
+      };
+      case UPDATE_SUBJECT_ACTIVITY:
+      return {
+        ...state,
+        subjectsFilters: { ...state.subjectsFilters, activity: actions.payload }
       };
     default:
       return state;
