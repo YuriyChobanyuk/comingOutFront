@@ -9,17 +9,12 @@ interface Props<T extends string> {
   id?: string;
   setValue: (value: T) => void;
   selected: T | null;
+  size?: 'lg' | 'sm';
 }
 
-export const SelectionDropdown: <T extends string>(p: Props<T>) => ReactElement = ({
-  events,
-  title,
-  variant,
-  id,
-  setValue,
-  selected
-}) => {
-
+export const SelectionDropdown: <T extends string>(
+  p: Props<T>
+) => ReactElement = ({ events, title, variant, id, setValue, selected, size }) => {
   const handleSelect = (eventKey: any, event: BaseSyntheticEvent) => {
     setValue(eventKey);
   };
@@ -30,9 +25,15 @@ export const SelectionDropdown: <T extends string>(p: Props<T>) => ReactElement 
       variant={variant || "primary"}
       id={id || `selection-dropdown-${title}`}
       key={variant}
+      size={size || 'sm'}
     >
       {events.map(event => (
-        <Dropdown.Item eventKey={event} onSelect={handleSelect} active={selected === event}>
+        <Dropdown.Item
+          eventKey={event}
+          onSelect={handleSelect}
+          active={selected === event}
+          key={event + "-key"}
+        >
           {event}
         </Dropdown.Item>
       ))}

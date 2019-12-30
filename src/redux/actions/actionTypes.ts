@@ -1,7 +1,10 @@
-import SubjectModel from "../../models/subject.model";
+import { Direction } from './../../models/types.model';
+import { PaginationSort } from './../../models/pagination.model';
+import SubjectModel, { SubjectQueryParams } from "../../models/subject.model";
 import NotificationModel from "../../models/notification.model";
 import { UserModel } from "../../models/user.model";
 import { FilterActiveEvents } from "../../models/types.model";
+import { PaginateResult } from "../../models/pagination.model";
 
 // Subject actions
 export const ADD_SUBJECT = "ADD_SUBJECT";
@@ -10,6 +13,11 @@ export const REMOVE_SUBJECT = "REMOVE_SUBJECT";
 export const UPDATE_SUBJECT = "UPDATE_SUBJECT";
 export const UPDATE_SUBJECT_SEARCH = "UPDATE_SUBJECT_SEARCH";
 export const UPDATE_SUBJECT_ACTIVITY = "UPDATE_SUBJECT_ACTIVITY";
+export const APPEND_SUBJECT_PAGINATION = 'APPEND_SUBJECT_PAGINATION';
+export const UPDATE_SUBJECT_PAGINATION = 'UPDATE_SUBJECT_PAGINATION';
+export const UPDATE_SUBJECT_PAGINATION_QUERY = 'UPDATE_SUBJECT_PAGINATION_QUERY';
+export const UPDATE_SUBJECT_PAGINATION_SORT = 'UPDATE_SUBJECT_PAGINATION_SORT';
+
 
 interface addSubjectAction {
   type: typeof ADD_SUBJECT;
@@ -40,13 +48,36 @@ interface updateSubjectActivity {
   payload: FilterActiveEvents | null;
 }
 
+interface updateSubjectsPagination {
+  type: typeof UPDATE_SUBJECT_PAGINATION;
+  payload: PaginateResult<SubjectModel>
+}
+
+interface appendSubjectsPagination {
+  type: typeof APPEND_SUBJECT_PAGINATION;
+  payload: PaginateResult<SubjectModel>
+}
+
+interface updateSubjectsPaginationQuery {
+  type: typeof UPDATE_SUBJECT_PAGINATION_QUERY,
+  payload: Pick<SubjectQueryParams, 'limit' | 'page'>
+}
+interface updateSubjectsPaginationSort {
+  type: typeof UPDATE_SUBJECT_PAGINATION_SORT,
+  payload: PaginationSort<{[key: string]: Direction}> | null
+}
+
 export type subjectActionTypes =
   | addSubjectAction
   | appendSubjectsAction
   | removeSubjectAction
   | updateSubjectAction
   | updateSubjectSearch
-  | updateSubjectActivity;
+  | updateSubjectActivity
+  | updateSubjectsPagination
+  | appendSubjectsPagination
+  | updateSubjectsPaginationQuery
+  | updateSubjectsPaginationSort;
 
 // Toast actions
 export const TOAST_ADD = "TOAST_ADD";

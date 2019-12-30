@@ -1,13 +1,13 @@
 import React from "react";
 import { camelToPascal } from "../services/pipe.service";
 import { Direction } from "../models/types.model";
+import { PaginationSort } from "../models/pagination.model";
 
 interface Props {
   fields: string[];
   activeField: string | null;
-  setActiveField: (actField: string) => void;
+  setSort: (sort: PaginationSort<{ [key: string]: Direction }> | null) => void;
   direction: Direction;
-  setDirection: (dir: Direction) => void;
   skipFields?: string[];
 }
 
@@ -15,28 +15,31 @@ export const TableHeader: React.FC<Props> = ({
   fields,
   activeField,
   direction,
-  setActiveField,
-  setDirection,
+  setSort,
   skipFields = []
 }) => {
   const handleHeaderClick = (field: string) => {
-    if (activeField === field) {
+    let newDir: Direction = "desc";
+    let newField: string | null = field;
+    if (field === activeField) {
       switch (direction) {
-        case "increase":
-          setDirection("decrease");
+        case "desc":
+          newDir = "asc";
           break;
-        case "decrease":
-          setDirection("source");
-          setActiveField("unselected");
+        case "asc":
+          newField = null;
+          newDir = null;
           break;
-        case "source":
-          setDirection("increase");
+        case null:
+          newDir = "desc";
           break;
       }
-      return;
     }
-    setActiveField(field);
-    setDirection("increase");
+
+    const newSort = newField
+      ? ({ [newField]: newDir } as PaginationSort<{ [key: string]: Direction }>)
+      : null;
+    setSort(newSort);
   };
 
   return (

@@ -1,5 +1,9 @@
+import { PaginationSort } from "./../../models/pagination.model";
 import { debounce } from "lodash";
-import { SubjectFormModel } from "./../../models/subject.model";
+import {
+  SubjectFormModel,
+  SubjectQueryParams
+} from "./../../models/subject.model";
 import {
   ADD_SUBJECT,
   APPEND_SUBJECTS,
@@ -7,7 +11,11 @@ import {
   UPDATE_SUBJECT,
   subjectActionTypes,
   UPDATE_SUBJECT_SEARCH,
-  UPDATE_SUBJECT_ACTIVITY
+  UPDATE_SUBJECT_ACTIVITY,
+  UPDATE_SUBJECT_PAGINATION,
+  APPEND_SUBJECT_PAGINATION,
+  UPDATE_SUBJECT_PAGINATION_QUERY,
+  UPDATE_SUBJECT_PAGINATION_SORT
 } from "./actionTypes";
 import {
   getSubject as axiosGetSubject,
@@ -20,8 +28,9 @@ import { notifyError, notifySuccess } from "./toast.actions";
 import SubjectModel from "../../models/subject.model";
 import { AppThunk } from "../state.model";
 import { History } from "history";
-import { FilterActiveEvents } from "../../models/types.model";
+import { FilterActiveEvents, Direction } from "../../models/types.model";
 import { Dispatch } from "redux";
+import { PaginateResult } from "../../models/pagination.model";
 
 export const addSubject = (subject: SubjectModel): subjectActionTypes => ({
   type: ADD_SUBJECT,
@@ -57,6 +66,34 @@ export const updateSubjectActivity = (
   payload: activity
 });
 
+export const updateSubjectsPagination = (
+  pagination: PaginateResult<SubjectModel>
+): subjectActionTypes => ({
+  type: UPDATE_SUBJECT_PAGINATION,
+  payload: pagination
+});
+
+export const appendSubjectsPagination = (
+  pagination: PaginateResult<SubjectModel>
+): subjectActionTypes => ({
+  type: APPEND_SUBJECT_PAGINATION,
+  payload: pagination
+});
+
+export const updateSubjPugQuery = (
+  query: Pick<SubjectQueryParams, "limit" | "page">
+): subjectActionTypes => ({
+  type: UPDATE_SUBJECT_PAGINATION_QUERY,
+  payload: query
+});
+
+export const updateSubjPugSort = (
+  sort: PaginationSort<{ [key: string]: Direction }> | null
+): subjectActionTypes => ({
+  type: UPDATE_SUBJECT_PAGINATION_SORT,
+  payload: sort
+});
+
 export const getSubject = (id: string): AppThunk => dispatch => {
   axiosGetSubject(id)
     .then(subject => {
@@ -70,31 +107,33 @@ export const getSubject = (id: string): AppThunk => dispatch => {
 };
 
 export const getSubjectsList = (
-  search: string | null,
-  activity: FilterActiveEvents | null
+  query: SubjectQueryParams
 ): AppThunk => dispatch => {
-  axiosGetSubjects(search, activity)
-    .then(resObject => dispatch(appendSubjects(resObject.subjectsList)))
+  axiosGetSubjects(query)
+    .then(pagination => dispatch(appendSubjects(pagination.docs)))
     .catch(e => {
       dispatch(notifyError(e.message));
     });
 };
 
-const innerFunction = debounce((dispatch: Dispatch, search: string | null,
-  activity: FilterActiveEvents | null) => {
-  axiosGetSubjects(search, activity)
-        .then(resObject => dispatch(appendSubjects(resObject.subjectsList)))
-        .catch(e => {
-          dispatch(notifyError(e.message));
-        });
-}, 300, { leading: true, trailing: true });
-
+const innerFunction = debounce(
+  (dispatch: Dispatch, queryParams: SubjectQueryParams) => {
+    axiosGetSubjects(queryParams)
+      .then(pagination => {
+        dispatch(appendSubjects(pagination.docs));
+        dispatch(appendSubjectsPagination(pagination));
+      })
+      .catch(e => {
+        dispatch(notifyError(e.message));
+      });
+  },
+  400,
+  { leading: true, trailing: true }
+);
 
 export const getSubjectsListWithDebounce = (
-  search: string | null,
-  activity: FilterActiveEvents | null
-): AppThunk => dispatch => innerFunction(dispatch, search, activity)
-  
+  queryParams: SubjectQueryParams
+): AppThunk => dispatch => innerFunction(dispatch, queryParams);
 
 export const postSubject = (
   subject: SubjectFormModel

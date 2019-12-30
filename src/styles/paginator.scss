@@ -1,0 +1,11 @@
+.paginator-container {
+  display: flex;
+  justify-content: center;
+  position: relative;
+
+  &__limit-selector {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}

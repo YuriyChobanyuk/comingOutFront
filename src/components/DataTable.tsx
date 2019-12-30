@@ -1,7 +1,8 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement } from "react";
 import { Table } from "react-bootstrap";
 import { Direction } from "../models/types.model";
 import { TableHeader } from "./TableHeader";
+import { PaginationSort } from "../models/pagination.model";
 
 interface Props<V> {
   data: V[];
@@ -9,7 +10,9 @@ interface Props<V> {
   recordAction?: Function;
   responsive?: boolean;
   variant?: "dark" | "light";
-  cssClasses?: string[]
+  cssClasses?: string[];
+  setSort: (sort: PaginationSort<{ [key: string]: Direction }> | null) => void;
+  sort: PaginationSort<{ [key: string]: Direction }> | null;
 }
 
 export const DataTable: <T extends { _id: string }>(
@@ -20,26 +23,13 @@ export const DataTable: <T extends { _id: string }>(
   recordAction,
   responsive,
   variant,
-  cssClasses
+  cssClasses,
+  setSort,
+  sort
 }) => {
-  const [filterField, setFilterField] = useState<string | null>(null);
-  const [filterDirection, setFilterDirection] = useState<Direction>("source");
+  const [field, direction] = sort ? Object.entries(sort)[0] : [null, null];
 
   const headerFields = fields.filter(field => typeof field === "string");
-
-  const sortCompare = (
-    item1: typeof data[number],
-    item2: typeof data[number]
-  ): number => {
-    if (filterDirection === "source" || !filterField) return 0;
-    if (filterDirection === "decrease") {
-      return item1[filterField] > item2[filterField] ? 1 : -1;
-    } else {
-      return item1[filterField] > item2[filterField] ? -1 : 1;
-    }
-  };
-
-  const sortedData = data.sort((item1, item2) => sortCompare(item1, item2));
 
   return (
     <Table
@@ -52,15 +42,14 @@ export const DataTable: <T extends { _id: string }>(
       variant={variant}
     >
       <TableHeader
-        activeField={filterField}
+        activeField={field}
         fields={headerFields}
-        direction={filterDirection}
-        setActiveField={setFilterField}
-        setDirection={setFilterDirection}
+        direction={direction}
+        setSort={setSort}
         skipFields={["comingDate"]}
       ></TableHeader>
       <tbody>
-        {sortedData.map(item => (
+        {data.map(item => (
           <tr
             key={item._id}
             onClick={recordAction && recordAction.bind(null, item._id)}

@@ -1,4 +1,4 @@
-import React, { FC, FocusEvent, FormEvent } from "react";
+import React, { FC, FocusEvent } from "react";
 import { SubjectFormModel } from "../../models/subject.model";
 
 interface Props {
@@ -24,10 +24,9 @@ export const FileInput: FC<Props> = ({
   setFileName,
   accept
 }) => {
-  const handleFile = (e: FormEvent) => {
-    if (!e || !e.target || !e.currentTarget) return null;
-    // @ts-ignore
-    const file = e.currentTarget.files[0];
+  const handleFile = (files: FileList | null) => {
+    if (!files) return;
+    const file = files[0];
     if (file) {
       setFieldValue(fieldName, file);
       setFileName(file.name);
@@ -47,7 +46,9 @@ export const FileInput: FC<Props> = ({
           accept={accept}
           id={fieldName}
           name={fieldName}
-          onChange={handleFile}
+          onChange={e => {
+            handleFile(e.target.files);
+          }}
           onBlur={handleBlur}
         />
         <label className="custom-file-label" htmlFor={fieldName}>

@@ -1,7 +1,11 @@
-import SubjectModel, { SubjectFormModel } from "./../models/subject.model";
+import { PaginateResult } from "./../models/pagination.model";
+import SubjectModel, {
+  SubjectFormModel,
+  SubjectQueryParams
+} from "./../models/subject.model";
 import axios, { AxiosResponse } from "axios";
 import { reformatToMultipart } from "./forms.service";
-import { FilterActiveEvents } from "../models/types.model";
+import { pickBy, isNil } from "lodash";
 
 export const postSubject = async (
   values: SubjectFormModel
@@ -16,19 +20,11 @@ export const postSubject = async (
 };
 
 export const getSubjects = async (
-  search: string | null,
-  activity: FilterActiveEvents | null
-): Promise<{
-  subjectsList: SubjectModel[];
-}> => {
-  let res: AxiosResponse<{ subjectsList: SubjectModel[] }>;
+  queryParams: SubjectQueryParams
+): Promise<PaginateResult<SubjectModel>> => {
+  let res: AxiosResponse<PaginateResult<SubjectModel>>;
 
-  let paramsObj: {
-    search?: string | null;
-    activity?: FilterActiveEvents | null;
-  } = {};
-  search && Object.assign(paramsObj, { search });
-  activity && Object.assign(paramsObj, { activity });
+  let paramsObj: SubjectQueryParams = pickBy(queryParams, item => !isNil(item));
 
   try {
     res = await axios.get(`/subjects`, {
@@ -39,7 +35,7 @@ export const getSubjects = async (
   } catch (e) {
     throw new Error("Subjects get error: " + e.message);
   }
-  return res.data;
+  return {...res.data, pages: res.data.totalPages};
 };
 
 export const getSubject = async (id: string): Promise<SubjectModel> => {

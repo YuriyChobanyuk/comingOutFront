@@ -1,2 +1,2 @@
-export type Direction = "decrease" | "increase" | "source";
+export type Direction = "asc" | "desc" | null;
 export type FilterActiveEvents = "Active" | "Inactive" | "All";

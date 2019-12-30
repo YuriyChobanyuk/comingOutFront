@@ -20,14 +20,14 @@ $transX: -10px;
     cursor: pointer;
   }
 
-  &_increase {
+  &_desc {
     &::before {
       @extend %arrow-element;
       transform: translate($transX, 10px) rotate(-45deg);
     }
   }
 
-  &_decrease {
+  &_asc {
     &::before {
       @extend %arrow-element;
       transform: translate($transX, 10px) rotate(135deg);

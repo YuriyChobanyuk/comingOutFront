@@ -1,3 +1,6 @@
+import { PaginationSort } from './pagination.model';
+import { FilterActiveEvents, Direction } from "./types.model";
+
 export default interface SubjectModel {
   title: string;
   active: boolean;
@@ -16,4 +19,12 @@ export interface SubjectFormModel {
   category: string;
   imgFile?: File | null;
   imgPath?: string;
+}
+
+export interface SubjectQueryParams {
+  search?: string | null,
+  activity?: FilterActiveEvents | null,
+  limit?: number,
+  page?: number,
+  sort?: PaginationSort<{[key: string]: Direction}> | null
 }
