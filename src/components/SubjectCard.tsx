@@ -8,7 +8,6 @@ import { apiURL } from "../configs";
 
 export default function SubjectCard(props: {
   subject: SubjectModel;
-  children: JSX.Element;
 }) {
   const { title, imgPath, ...rest } = props.subject;
 
@@ -41,8 +40,7 @@ export default function SubjectCard(props: {
                         </div>
                       ))}
                   </div>
-                  <div className="col-4">{props.children}</div>
-                </Row>
+\                </Row>
               </Row>
             </div>
           </Row>

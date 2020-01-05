@@ -15,7 +15,7 @@ import {
   subjectActionTypes
 } from "../actions/actionTypes";
 import SubjectModel, { SubjectQueryParams } from "../../models/subject.model";
-import { FilterActiveEvents, Direction } from "../../models/types.model";
+import { FilterActiveEvents } from "../../models/types.model";
 import { PaginateResult } from "../../models/pagination.model";
 
 export interface SubjectsInitialState {
@@ -25,7 +25,7 @@ export interface SubjectsInitialState {
     activity: FilterActiveEvents | null;
   };
   subjectsPagination: PaginateResult<SubjectModel>;
-  subjectSort: PaginationSort<{ [key: string]: Direction }> | null;
+  subjectSort: PaginationSort | null;
 }
 
 const initialState: SubjectsInitialState = {

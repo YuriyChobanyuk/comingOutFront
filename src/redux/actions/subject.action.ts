@@ -27,8 +27,8 @@ import {
 import { notifyError, notifySuccess } from "./toast.actions";
 import SubjectModel from "../../models/subject.model";
 import { AppThunk } from "../state.model";
-import { History } from "history";
-import { FilterActiveEvents, Direction } from "../../models/types.model";
+import {history} from '../../helpers/history';
+import { FilterActiveEvents } from "../../models/types.model";
 import { Dispatch } from "redux";
 import { PaginateResult } from "../../models/pagination.model";
 
@@ -88,7 +88,7 @@ export const updateSubjPugQuery = (
 });
 
 export const updateSubjPugSort = (
-  sort: PaginationSort<{ [key: string]: Direction }> | null
+  sort: PaginationSort | null
 ): subjectActionTypes => ({
   type: UPDATE_SUBJECT_PAGINATION_SORT,
   payload: sort
@@ -157,8 +157,7 @@ export const putSubject = (
 };
 
 export const deleteSubject = (
-  subject: SubjectModel,
-  history: History
+  subject: SubjectModel
 ): AppThunk => dispatch => {
   axiosDeleteSubject(subject)
     .then(deletedSubject => dispatch(removeSubject(deletedSubject)))

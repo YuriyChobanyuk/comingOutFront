@@ -7,6 +7,7 @@ import { Login } from "./pages/Login";
 import PrivateRoute from "./components/PrivateRoute";
 import ToastList from "./components/ToastList";
 import { Navigation } from "./components/Navigation";
+import { ModalContainer } from "./components/ModalContainer";
 import { checkTokenExp } from "./services/auth.service";
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <User />
         </PrivateRoute>
       </Switch>
+      <ModalContainer />
     </Fragment>
   );
 }

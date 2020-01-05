@@ -1,3 +1,4 @@
+import { Direction } from "./types.model";
 export interface PaginateResult<T> {
   docs: T[];
   total: number;
@@ -12,4 +13,4 @@ export interface PaginateResult<T> {
   [customLabel: string]: any;
 }
 
-export type PaginationSort<T> = { [key in keyof T]: "asc" | "desc" };
+export type PaginationSort = { [key: string]: Direction };

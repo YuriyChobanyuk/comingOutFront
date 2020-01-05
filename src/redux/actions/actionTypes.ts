@@ -1,4 +1,3 @@
-import { Direction } from './../../models/types.model';
 import { PaginationSort } from './../../models/pagination.model';
 import SubjectModel, { SubjectQueryParams } from "../../models/subject.model";
 import NotificationModel from "../../models/notification.model";
@@ -64,7 +63,7 @@ interface updateSubjectsPaginationQuery {
 }
 interface updateSubjectsPaginationSort {
   type: typeof UPDATE_SUBJECT_PAGINATION_SORT,
-  payload: PaginationSort<{[key: string]: Direction}> | null
+  payload: PaginationSort | null
 }
 
 export type subjectActionTypes =

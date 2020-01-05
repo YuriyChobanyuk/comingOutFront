@@ -1,18 +1,20 @@
 import React, { ReactElement } from "react";
 import { Table } from "react-bootstrap";
-import { Direction } from "../models/types.model";
+import { ControlOptions } from "../models/types.model";
 import { TableHeader } from "./TableHeader";
 import { PaginationSort } from "../models/pagination.model";
+import { ControlButton } from "./ControlButton";
+import { omit } from "lodash";
 
 interface Props<V> {
-  data: V[];
+  data: (V & { options?: ControlOptions<V> })[];
   fields: Extract<keyof V, string>[];
   recordAction?: Function;
   responsive?: boolean;
   variant?: "dark" | "light";
   cssClasses?: string[];
-  setSort: (sort: PaginationSort<{ [key: string]: Direction }> | null) => void;
-  sort: PaginationSort<{ [key: string]: Direction }> | null;
+  setSort: (sort: PaginationSort | null) => void;
+  sort: PaginationSort | null;
 }
 
 export const DataTable: <T extends { _id: string }>(
@@ -30,6 +32,8 @@ export const DataTable: <T extends { _id: string }>(
   const [field, direction] = sort ? Object.entries(sort)[0] : [null, null];
 
   const headerFields = fields.filter(field => typeof field === "string");
+
+  type fieldT = keyof typeof data[number];
 
   return (
     <Table
@@ -54,9 +58,15 @@ export const DataTable: <T extends { _id: string }>(
             key={item._id}
             onClick={recordAction && recordAction.bind(null, item._id)}
           >
-            {fields.map((field, index) => (
-              <td key={index}>{item[field]}</td>
-            ))}
+            {fields.map((field : fieldT, index) => {
+              return field === "options" ? (
+                <td key={index} className={'d-flex justify-content-center'}>
+                  <ControlButton options={item.options} target={omit(item, 'options')} />
+                </td>
+              ) : (
+                <td key={index}>{item[field]}</td>
+              );
+            })}
           </tr>
         ))}
       </tbody>

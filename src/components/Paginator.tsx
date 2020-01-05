@@ -24,16 +24,6 @@ export const Paginator: FC<Props> = ({
   hasNextPage,
   hasPrevPage
 }) => {
-  console.log({
-    limit,
-    page,
-    pages,
-    setLimit,
-    setPage,
-    size,
-    hasNextPage,
-    hasPrevPage
-  });
   if (!pages || !page) return <h1>no pages</h1>;
   const fill: string[] = new Array(pages).fill("1");
   const paginationStep = ["15", "30", "50"];

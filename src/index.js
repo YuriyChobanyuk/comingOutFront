@@ -47,7 +47,7 @@ axios.interceptors.response.use(
     }
 
     tries++;
-    if (tries === 2) {
+    if (tries >= 2) {
       logout();
     }
 

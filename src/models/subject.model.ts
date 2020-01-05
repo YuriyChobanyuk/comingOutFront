@@ -1,5 +1,5 @@
 import { PaginationSort } from './pagination.model';
-import { FilterActiveEvents, Direction } from "./types.model";
+import { FilterActiveEvents } from "./types.model";
 
 export default interface SubjectModel {
   title: string;
@@ -26,5 +26,5 @@ export interface SubjectQueryParams {
   activity?: FilterActiveEvents | null,
   limit?: number,
   page?: number,
-  sort?: PaginationSort<{[key: string]: Direction}> | null
+  sort?: PaginationSort | null
 }

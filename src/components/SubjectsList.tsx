@@ -8,13 +8,13 @@ import { format } from "date-fns";
 import {
   getSubjectsListWithDebounce,
   updateSubjPugQuery,
-  updateSubjPugSort
+  updateSubjPugSort,
 } from "../redux/actions/subject.action";
 import { RootState } from "../redux/rootReducer";
 import { Paginator } from "./Paginator";
 import { paginatorData } from "../redux/selectors/subject.selector";
 import { PaginationSort } from "../models/pagination.model";
-import { Direction } from "tty";
+import { ControlOptions } from "../models/types.model";
 
 const SubjectsList: React.FC = () => {
   const dispatch = useDispatch();
@@ -25,8 +25,12 @@ const SubjectsList: React.FC = () => {
     ({ subjectReducer }: RootState) => subjectReducer.subjectsFilters
   );
 
-  const { limit, page, pages, hasNextPage, hasPrevPage } = useSelector(paginatorData);
-  const sort = useSelector((state: RootState) => state.subjectReducer.subjectSort);
+  const { limit, page, pages, hasNextPage, hasPrevPage } = useSelector(
+    paginatorData
+  );
+  const sort = useSelector(
+    (state: RootState) => state.subjectReducer.subjectSort
+  );
 
   const subjects = useSelector(({ subjectReducer }: RootState) =>
     subjectReducer.subjects.map(subject => ({
@@ -37,7 +41,13 @@ const SubjectsList: React.FC = () => {
 
   useEffect(() => {
     dispatch(
-      getSubjectsListWithDebounce({ search, activity, limit, page: page || 1, sort })
+      getSubjectsListWithDebounce({
+        search,
+        activity,
+        limit,
+        page: page || 1,
+        sort
+      })
     );
   }, [search, activity, dispatch, limit, page, sort]);
 
@@ -53,34 +63,36 @@ const SubjectsList: React.FC = () => {
     dispatch(updateSubjPugQuery({ limit, page }));
   };
 
-  const setSort = (sort: PaginationSort<{[key: string]: Direction}> | null) => {
-    dispatch(updateSubjPugSort(sort))
-  }
+  const setSort = (
+    sort: PaginationSort | null
+  ) => {
+    dispatch(updateSubjPugSort(sort));
+  };
 
   return (
     <SubjectsControlPanel subjectsList={subjects}>
-      {({ filteredList }) => (
-        <>
-          <DataTable<SubjectModel>
-            data={filteredList}
-            fields={["title", "comingDate", "category", "pendingDate"]}
-            recordAction={moveToSubject}
-            responsive={true}
-            variant={"light"}
-            cssClasses={["cursor-pointer"]}
-            setSort={setSort}
-            sort={sort}
-          ></DataTable>
-          <Paginator
-            limit={limit}
-            page={page}
-            pages={pages}
-            setPage={setPage}
-            setLimit={setLimit}
-            hasNextPage={hasNextPage}
-            hasPrevPage={hasPrevPage}
-          />
-        </>
+      {({data}) => (
+      <>
+        <DataTable<SubjectModel & {options: ControlOptions<SubjectModel>}>
+          data={data}
+          fields={["title", "comingDate", "category", "pendingDate", "options"]}
+          recordAction={moveToSubject}
+          responsive={false}
+          variant={"light"}
+          cssClasses={["cursor-pointer", "subjects-table"]}
+          setSort={setSort}
+          sort={sort}
+        ></DataTable>
+        <Paginator
+          limit={limit}
+          page={page}
+          pages={pages}
+          setPage={setPage}
+          setLimit={setLimit}
+          hasNextPage={hasNextPage}
+          hasPrevPage={hasPrevPage}
+        />
+      </>
       )}
     </SubjectsControlPanel>
   );

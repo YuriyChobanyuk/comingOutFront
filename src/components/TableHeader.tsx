@@ -6,7 +6,7 @@ import { PaginationSort } from "../models/pagination.model";
 interface Props {
   fields: string[];
   activeField: string | null;
-  setSort: (sort: PaginationSort<{ [key: string]: Direction }> | null) => void;
+  setSort: (sort: PaginationSort | null) => void;
   direction: Direction;
   skipFields?: string[];
 }
@@ -37,7 +37,7 @@ export const TableHeader: React.FC<Props> = ({
     }
 
     const newSort = newField
-      ? ({ [newField]: newDir } as PaginationSort<{ [key: string]: Direction }>)
+      ? ({ [newField]: newDir } as PaginationSort)
       : null;
     setSort(newSort);
   };

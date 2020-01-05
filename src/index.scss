@@ -36,3 +36,13 @@ code {
 img {
   max-width: 100%;
 }
+
+.button-icon {
+  position: relative;
+  top: 2px;
+  transform: scale(1.2);
+}
+
+.table-control-button {
+  padding: .25rem .5rem;
+}

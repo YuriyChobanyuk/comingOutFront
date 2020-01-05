@@ -9,7 +9,12 @@ $transX: -10px;
   width: 20px;
   height: 20px;
   z-index: 2;
-  transition: transform .2s;
+  transition: transform 0.2s;
+}
+
+.subjects-table td,
+.subjects-table th {
+  vertical-align: middle;
 }
 
 .table__header {
@@ -31,6 +36,36 @@ $transX: -10px;
     &::before {
       @extend %arrow-element;
       transform: translate($transX, 10px) rotate(135deg);
+    }
+  }
+}
+
+.control-button {
+  &__button {
+    padding: 0.2rem 0.5rem;
+  }
+
+  &__container {
+    position: relative;
+  }
+}
+
+.control-list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(-140px, 50px);
+  z-index: 1005;
+
+  &__item {
+    cursor: pointer;
+    transition: background-color 0.2s;
+    padding: .5rem .75rem;
+    font-size: .9rem;
+    text-transform: uppercase;
+
+    &:hover {
+      background-color: lightgrey;
     }
   }
 }

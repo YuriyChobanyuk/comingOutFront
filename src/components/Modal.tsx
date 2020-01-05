@@ -1,29 +1,33 @@
-import React from "react";
+import React, { FC } from "react";
 import { Button, Modal } from "react-bootstrap";
-import ModalModel from '../models/modal.model';
+import ModalModel from "../models/modal.model";
+import {removeModal} from '../redux/actions/modal.action';
+import { useDispatch } from "react-redux";
 
-interface ModalProps {
-  show: boolean;
-  setShow: (val: boolean) => void;
-  modalProps: ModalModel
-}
+export const BootstrapModal: FC<ModalModel> = ({
+  confirmAction,
+  declineAction,
+  text,
+  title,
+  id
+}) => {
+  const dispatch =  useDispatch();
 
-export const BootstrapModal = ({ show, setShow, modalProps }: ModalProps) => {
-  const { title, text, confirmAction, declineAction } = modalProps;
-  const handleClose = () => setShow(false);
+  const handleHide = () => {
+    dispatch(removeModal(id));
+  }
 
   const handleDecline = (): void => {
     if (declineAction) declineAction();
-    handleClose();
   };
 
   const handleAccept = (): void => {
     confirmAction();
-    handleClose();
+    handleHide();
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={true} onHide={handleHide}>
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>

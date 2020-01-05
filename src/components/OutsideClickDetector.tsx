@@ -21,11 +21,12 @@ const useOutsideAlerter = (
 interface Props {
   children: JSX.Element;
   action: Function;
+  wrapperClasses?: string
 }
 
-export const OutsideClickDetector: React.FC<Props> = ({ children, action }) => {
+export const OutsideClickDetector: React.FC<Props> = ({ children, action, wrapperClasses }) => {
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef, action);
 
-  return <div ref={wrapperRef}>{children}</div>;
+  return <div className={wrapperClasses} ref={wrapperRef}>{children}</div>;
 };
